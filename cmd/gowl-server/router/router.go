@@ -7,7 +7,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-var responseTemplate *template.Template
+/* var responseTemplate *template.Template
 
 func init() {
 	// set default path
@@ -17,7 +17,7 @@ func init() {
 // Home ...
 // redirect to home.html
 func Home(res http.ResponseWriter, req *http.Request, param httprouter.Params) {
-	responseTemplate.ExecuteTemplate(res, "home.html", nil)
+	responseTemplate.ExecuteTemplate(res, "index.html", nil)
 }
 
 // About ...
@@ -25,3 +25,4 @@ func Home(res http.ResponseWriter, req *http.Request, param httprouter.Params) {
 func About(res http.ResponseWriter, req *http.Request, param httprouter.Params) {
 	responseTemplate.ExecuteTemplate(res, "about.html", nil)
 }
+*/
