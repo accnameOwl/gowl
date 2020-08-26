@@ -2,6 +2,25 @@ server:
   host: "localhost"
   port: 8000
 
-databse:
+fiber:
+  server_header: ""
+  strict_routing: false
+  case_sensitive: false
+  immutable: false
+  unescape_path: false
+  etag: false
+  prefork: false
+  body_limit: 0
+  concurrency: 0
+  disable_header_normalizing: false
+  disable_keep_alive: false
+  disable_default_date: false
+  disable_default_content_type: false
+  disable_startup_message: false
+  read_buffer_size: 4096
+  write_buffer_size: 4096
+  compressed_file_suffix: ".fiber.gz"
+
+database:
   user: "admin"
   pass: "admin"
