@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/kelseyhightower/envconfig"
 	"gopkg.in/yaml.v2"
 	"os"
