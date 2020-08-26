@@ -1,22 +1,17 @@
 package main
 
 import (
-	"fmt"
+
+	//"github.com/accnameowl/gowl/cmd/gowl-server/router"
 	"github.com/gofiber/fiber"
-	"log"
 )
 
 func main() {
 
-	await := <-ReadEnvFromYaml()
+	config := <-ReadEnvFromYaml()
 
-	app := fiber.New()
-	app.Get("/", func(c *fiber.Ctx) {
-		c.Send("Send to client")
-	})
+	runtimeSettings := <-FetchFiberSettings(&config)
+	app := fiber.New(&runtimeSettings)
 
-	// Concurrent listen function
-	go func() {
-		log.Fatal(app.Listen(3000))
-	}()
+	app.Listen(config.Server.Port)
 }
