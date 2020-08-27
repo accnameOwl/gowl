@@ -1,10 +1,11 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gofiber/fiber"
 	"github.com/kelseyhightower/envconfig"
 	"gopkg.in/yaml.v2"
-	"os"
 )
 
 // ReadEnvFromYaml ...
@@ -22,6 +23,10 @@ func ReadEnvFromYaml() <-chan Config {
 
 // Config ...
 type Config struct {
+	Build struct {
+		Debug bool `yaml:"build"`
+		Pprof bool `yaml:"pprof"`
+	} `yaml:"build"`
 	Server struct {
 		Port string `yaml:"port"` //, envconfig:"SERVER_PORT"`
 		Host string `yaml:"host"` //, envconfig:"SERVER_HOST`
