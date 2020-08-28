@@ -65,7 +65,7 @@ type Config struct {
 // FetchFiberSettings ...
 // Returns a new Settings type with settings from config.yml
 // ! Wrong way to use channels ??
-func FetchFiberSettings(c *Config) <-chan fiber.Settings {
+func FetchFiberSettings(c *Config) chan fiber.Settings {
 	out := make(chan fiber.Settings)
 	go func() {
 		out <- fiber.Settings{
