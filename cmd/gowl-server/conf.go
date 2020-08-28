@@ -4,12 +4,15 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber"
+
+	//! To be implemented
 	"github.com/kelseyhightower/envconfig"
 	"gopkg.in/yaml.v2"
 )
 
 // ReadEnvFromYaml ...
 // Creates environmental variables from config.yml
+// ! wrong way to use channels ???
 func ReadEnvFromYaml() <-chan Config {
 	task := make(chan Config)
 	go func() {
@@ -23,15 +26,18 @@ func ReadEnvFromYaml() <-chan Config {
 
 // Config ...
 type Config struct {
-	Build struct {
-		Debug bool `yaml:"build"`
-		Pprof bool `yaml:"pprof"`
-	} `yaml:"build"`
+	PPROF struct {
+		Active  bool
+		CPU     bool
+		Mem     bool
+		MemRate int
+		Trace   bool
+	}
 	Server struct {
 		Port string `yaml:"port"` //, envconfig:"SERVER_PORT"`
 		Host string `yaml:"host"` //, envconfig:"SERVER_HOST`
 	} `yaml:"server"`
-	Fiber struct {
+	Fiber struct { // ! envconfig values
 		ServerHeader              string `yaml:"server_header"`
 		StrictRouting             bool   `yaml:"strict_routing"`
 		CaseSensitive             bool   `yaml:"case_sensitive"`
@@ -58,6 +64,7 @@ type Config struct {
 
 // FetchFiberSettings ...
 // Returns a new Settings type with settings from config.yml
+// ! Wrong way to use channels ??
 func FetchFiberSettings(c *Config) <-chan fiber.Settings {
 	out := make(chan fiber.Settings)
 	go func() {
