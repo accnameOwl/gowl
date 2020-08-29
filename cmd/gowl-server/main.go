@@ -25,7 +25,12 @@ func main() {
 		app.Use(pprof.New())
 	}
 
-	app.Static("/profiling", "./router/public/index.html")
+	app.Static("/", "./public", fiber.Static{
+		Compress:  true,
+		ByteRange: false,
+		Browse:    false,
+		Index:     "index.html",
+	})
 
 	app.Listen(config.Server.Port)
 }
