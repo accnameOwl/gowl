@@ -1,32 +1,29 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gofiber/fiber"
+
+	//! To be implemented
 	"github.com/kelseyhightower/envconfig"
 	"gopkg.in/yaml.v2"
-	"os"
 )
-
-// ReadEnvFromYaml ...
-// Creates environmental variables from config.yml
-func ReadEnvFromYaml() <-chan Config {
-	task := make(chan Config)
-	go func() {
-		var cfg Config
-		FetchYaml("config.yml", &cfg)
-		//!	GrabEnv(&cfg)
-		task <- cfg
-	}()
-	return task
-}
 
 // Config ...
 type Config struct {
+	PPROF struct {
+		Active  bool
+		CPU     bool
+		Mem     bool
+		MemRate int
+		Trace   bool
+	}
 	Server struct {
 		Port string `yaml:"port"` //, envconfig:"SERVER_PORT"`
 		Host string `yaml:"host"` //, envconfig:"SERVER_HOST`
 	} `yaml:"server"`
-	Fiber struct {
+	Fiber struct { // ! envconfig values
 		ServerHeader              string `yaml:"server_header"`
 		StrictRouting             bool   `yaml:"strict_routing"`
 		CaseSensitive             bool   `yaml:"case_sensitive"`
@@ -53,31 +50,36 @@ type Config struct {
 
 // FetchFiberSettings ...
 // Returns a new Settings type with settings from config.yml
-func FetchFiberSettings(c *Config) <-chan fiber.Settings {
-	out := make(chan fiber.Settings)
-	go func() {
-		out <- fiber.Settings{
-			ServerHeader:              c.Fiber.ServerHeader,
-			StrictRouting:             c.Fiber.StrictRouting,
-			CaseSensitive:             c.Fiber.CaseSensitive,
-			Immutable:                 c.Fiber.Immutable,
-			UnescapePath:              c.Fiber.UnescapePath,
-			ETag:                      c.Fiber.ETag,
-			Prefork:                   c.Fiber.Prefork,
-			BodyLimit:                 c.Fiber.BodyLimit,
-			Concurrency:               c.Fiber.Concurrency,
-			DisableKeepalive:          c.Fiber.DisableKeepalive,
-			DisableDefaultDate:        c.Fiber.DisableDefaultDate,
-			DisableDefaultContentType: c.Fiber.DisableDefaultContentType,
-			DisableHeaderNormalizing:  c.Fiber.DisableHeaderNormalizing,
-			DisableStartupMessage:     c.Fiber.DisableStartupMessage,
-			ReadBufferSize:            c.Fiber.ReadBufferSize,
-			WriteBufferSize:           c.Fiber.WriteBufferSize,
-			CompressedFileSuffix:      c.Fiber.CompressedFileSuffix,
-		}
-		close(out)
-	}()
+// ! Wrong way to use channels ??
+func FetchFiberSettings(c *Config) *fiber.Settings {
+	out := &fiber.Settings{
+		ServerHeader:              c.Fiber.ServerHeader,
+		StrictRouting:             c.Fiber.StrictRouting,
+		CaseSensitive:             c.Fiber.CaseSensitive,
+		Immutable:                 c.Fiber.Immutable,
+		UnescapePath:              c.Fiber.UnescapePath,
+		ETag:                      c.Fiber.ETag,
+		Prefork:                   c.Fiber.Prefork,
+		BodyLimit:                 c.Fiber.BodyLimit,
+		Concurrency:               c.Fiber.Concurrency,
+		DisableKeepalive:          c.Fiber.DisableKeepalive,
+		DisableDefaultDate:        c.Fiber.DisableDefaultDate,
+		DisableDefaultContentType: c.Fiber.DisableDefaultContentType,
+		DisableHeaderNormalizing:  c.Fiber.DisableHeaderNormalizing,
+		DisableStartupMessage:     c.Fiber.DisableStartupMessage,
+		ReadBufferSize:            c.Fiber.ReadBufferSize,
+		WriteBufferSize:           c.Fiber.WriteBufferSize,
+		CompressedFileSuffix:      c.Fiber.CompressedFileSuffix,
+	}
 	return out
+}
+
+// ReadEnvFromYaml ...
+// Creates environmental variables from config.yml
+func ReadEnvFromYaml() Config {
+	var cfg Config
+	FetchYaml("config.yml", &cfg)
+	return cfg
 }
 
 // FetchYaml ...
